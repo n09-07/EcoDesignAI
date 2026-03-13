@@ -16,10 +16,59 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY", "ecodesignai-dev-secret")
 # Material reference (for /api/material endpoint)
 # ─────────────────────────────────────────────────────────────
 MATERIAL_DATA = {
-    "plastic":  {"carbon": 8, "recyclable": "Partial", "cost": "Low",    "durability": "High"},
-    "bamboo":   {"carbon": 2, "recyclable": "Yes",     "cost": "Low",    "durability": "Medium"},
-    "steel":    {"carbon": 6, "recyclable": "Yes",     "cost": "Medium", "durability": "High"},
-    "aluminum": {"carbon": 3, "recyclable": "Yes",     "cost": "Medium", "durability": "High"}
+    "plastic": {
+        "carbon": 8,
+        "recyclable": "Partial",
+        "cost": "Low",
+        "durability": "High",
+        "lifecycle": "High",
+        "eco_score": 3
+    },
+
+    "bamboo": {
+        "carbon": 2,
+        "recyclable": "Yes",
+        "cost": "Low",
+        "durability": "Medium",
+        "lifecycle": "Low",
+        "eco_score": 9
+    },
+
+    "steel": {
+        "carbon": 6,
+        "recyclable": "Yes",
+        "cost": "Medium",
+        "durability": "High",
+        "lifecycle": "Medium",
+        "eco_score": 7
+    },
+
+    "aluminum": {
+        "carbon": 3,
+        "recyclable": "Yes",
+        "cost": "Medium",
+        "durability": "High",
+        "lifecycle": "Medium",
+        "eco_score": 8
+    },
+
+    "mycelium": {
+        "carbon": 1,
+        "recyclable": "Yes",
+        "cost": "Medium",
+        "durability": "Medium",
+        "lifecycle": "Low",
+        "eco_score": 10
+    },
+
+    "bioplastic": {
+        "carbon": 4,
+        "recyclable": "Yes",
+        "cost": "Medium",
+        "durability": "Medium",
+        "lifecycle": "Low",
+        "eco_score": 8
+    }
 }
 
 
