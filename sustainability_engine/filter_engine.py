@@ -22,14 +22,22 @@ def map_durability(value):
 def map_cost(value):
     return {"low": 3, "medium": 2, "high": 1}.get(str(value).lower(), 1)
 
+def map_lifecycle_impact(value):
+    return {"low": 3, "medium": 2, "high": 1}.get(str(value).lower(), 1)
+
 
 def calculate_final_score(row, eco_priority=False):
-    eco_w  = 0.5 if eco_priority else 0.3
-    dur_w  = 0.3
-    cost_w = 0.2
-    return (row["eco_score"] * eco_w
-            + map_durability(row.get("durability")) * 10 * dur_w
-            + map_cost(row.get("cost_level")) * 10 * cost_w)
+    eco_w  = 0.4 if eco_priority else 0.25
+    dur_w  = 0.25
+    cost_w = 0.15
+    life_w = 0.2
+
+    return (
+        row["eco_score"] * eco_w
+        + map_durability(row.get("durability")) * 10 * dur_w
+        + map_cost(row.get("cost_level")) * 10 * cost_w
+        + map_lifecycle_impact(row.get("lifecycle_impact")) * 10 * life_w
+    )
 
 
 def filter_materials(product=None, budget=None, eco_priority=False,
@@ -100,3 +108,4 @@ def filter_materials(product=None, budget=None, eco_priority=False,
                 results.insert(0, row.to_dict())
 
     return results
+

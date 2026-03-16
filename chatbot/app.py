@@ -2,6 +2,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+from user_history import init_db
 from flask import Flask, request, jsonify, render_template, session
 from chatbot.nlp_utils import extract_data
 from sustainability_engine.decision_engine import generate_decision
@@ -11,7 +12,7 @@ app = Flask(__name__)
 # Required for session — set a real secret in production via env var
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "ecodesignai-dev-secret")
 
-
+init_db()
 # ─────────────────────────────────────────────────────────────
 # Material reference (for /api/material endpoint)
 # ─────────────────────────────────────────────────────────────

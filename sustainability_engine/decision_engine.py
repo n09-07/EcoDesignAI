@@ -1,5 +1,5 @@
 from .filter_engine import filter_materials
-
+from chatbot.user_history import save_history
 
 def interpret_carbon(score):
     if score <= 30:
@@ -40,6 +40,9 @@ def generate_decision(product=None, budget=None, eco_priority=False,
 
     top_material = materials[0]
     top_3        = materials[:3]
+    
+    # save recommendation to database
+    save_history(product, top_material.get("material"))
 
     carbon_meaning    = interpret_carbon(top_material.get("carbon_score", 0))
     durability_meaning = interpret_durability(top_material.get("durability", ""))
@@ -82,3 +85,38 @@ def generate_decision(product=None, budget=None, eco_priority=False,
         "decision_explanation": explanation.strip(),
         "eco_warning":          eco_warning   # None if no issue, string if forced
     }
+
+def sustainability_score(material):
+
+    score = 0
+
+    # lower carbon is better
+    score += max(0, 100 - material["carbon_score"]) * 0.3
+
+    # recyclability
+    if material["recyclable"] == "yes":
+        score += 20
+
+    # biodegradability
+    if material["biodegradable"] == "yes":
+        score += 20
+
+    # durability
+    durability_scores = {
+        "low": 5,
+        "medium": 10,
+        "high": 15
+    }
+
+    score += durability_scores.get(material["durability"], 0)
+
+    # lifecycle
+    lifecycle_scores = {
+        "low": 15,
+        "medium": 10,
+        "high": 5
+    }
+
+    score += lifecycle_scores.get(material["lifecycle_impact"], 0)
+
+    return score
