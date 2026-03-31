@@ -4,10 +4,12 @@
 // ─────────────────────────────────────────────────────────────
 
 const MATERIALS = {
-    bamboo:   { carbonPct: 10, carbonLabel: "Low",    recyclable: "Yes",     cost: "Low",    durability: "Medium", sub: "Fast growing, renewable, low carbon footprint." },
-    plastic:  { carbonPct: 80, carbonLabel: "High",   recyclable: "Partial", cost: "Low",    durability: "High",   sub: "Lightweight and versatile, but high carbon output." },
-    steel:    { carbonPct: 60, carbonLabel: "Medium", recyclable: "Yes",     cost: "Medium", durability: "High",   sub: "Strong and fully recyclable structural material." },
-    aluminum: { carbonPct: 30, carbonLabel: "Low-Med",recyclable: "Yes",     cost: "Medium", durability: "High",   sub: "Lightweight, durable and highly recyclable metal." }
+    bamboo:     { carbonPct: 10, carbonLabel: "Low",     recyclable: "Yes",     cost: "Low",    durability: "Medium", sub: "Fast growing, renewable, low carbon footprint." },
+    plastic:    { carbonPct: 80, carbonLabel: "High",    recyclable: "Partial", cost: "Low",    durability: "High",   sub: "Lightweight and versatile, but high carbon output." },
+    steel:      { carbonPct: 60, carbonLabel: "Medium",  recyclable: "Yes",     cost: "Medium", durability: "High",   sub: "Strong and fully recyclable structural material." },
+    aluminum:   { carbonPct: 30, carbonLabel: "Low-Med", recyclable: "Yes",     cost: "Medium", durability: "High",   sub: "Lightweight, durable and highly recyclable metal." },
+    mycelium:   { carbonPct: 5,  carbonLabel: "Low",     recyclable: "Yes",     cost: "Medium", durability: "Low",    sub: "Fungi-based biomaterial, fully compostable and carbon-negative." },
+    bioplastic: { carbonPct: 20, carbonLabel: "Low",     recyclable: "Partial", cost: "Medium", durability: "Medium", sub: "Plant-derived plastic alternative with lower carbon emissions." }
 };
 
 const CARBON_COLORS = { Low: "#4ade80", "Low-Med": "#a3e635", Medium: "#facc15", High: "#f87171" };

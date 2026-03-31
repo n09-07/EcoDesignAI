@@ -40,7 +40,6 @@ def generate_decision(product=None, budget=None, eco_priority=False,
 
     top_material = materials[0]
     top_3        = materials[:3]
-    
     # save recommendation to database
     save_history(product, top_material.get("material"))
 
