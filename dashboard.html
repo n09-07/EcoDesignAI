@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head><title>Dashboard</title></head>
+<body>
+<h2>Welcome, {{ session['user'] }}</h2>
+<h3>Your Material Selections:</h3>
+<ul>
+    {% for product, material, timestamp in history %}
+    <li>{{ product }} - {{ material }} ({{ timestamp }})</li>
+    {% endfor %}
+</ul>
+<a href="/logout">Logout</a>
+</body>
+</html>
