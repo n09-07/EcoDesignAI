@@ -1,5 +1,5 @@
 from .filter_engine import filter_materials
-from chatbot.user_history import save_history
+from db_utils import save_history
 
 def interpret_carbon(score):
     if score <= 30:

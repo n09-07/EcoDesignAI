@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signup – EcoDesignAI</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:          #0d1a0f;
+            --surface:     #121f14;
+            --card:        #172219;
+            --border:      #243626;
+            --accent:      #4ade80;
+            --accent-dim:  #2d7a47;
+            --accent-glow: rgba(74, 222, 128, 0.15);
+            --text:        #e8f5e9;
+            --text-muted:  #6b8f72;
+            --text-dim:    #3d5c42;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            height: 100%;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Mono', monospace;
+        }
+
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(74,222,128,.07) 0%, transparent 60%),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 60 L60 0' stroke='%23243626' stroke-width='0.5' opacity='0.35'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Header */
+        header {
+            position: relative; z-index: 10;
+            border-bottom: 1px solid var(--border);
+            background: rgba(13,26,15,.96);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-inner {
+            max-width: 100%;
+            padding: 13px 28px;
+            display: flex; align-items: center; gap: 12px;
+        }
+
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+
+        .logo-icon {
+            width: 32px; height: 32px;
+            background: var(--accent);
+            border-radius: 7px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 16px rgba(74,222,128,.3);
+        }
+
+        header h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.15rem;
+            color: var(--text);
+        }
+        header h1 span { color: var(--accent); }
+
+        .header-tag {
+            font-size: 0.62rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            margin-left: 4px;
+        }
+
+        .status-dot {
+            width: 7px; height: 7px;
+            background: var(--accent);
+            border-radius: 50%;
+            margin-left: auto;
+            box-shadow: 0 0 7px var(--accent);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+        /* Page layout */
+        .page {
+            position: relative; z-index: 1;
+            min-height: calc(100vh - 59px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        /* Card */
+        .auth-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px 36px;
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            box-shadow: 0 0 60px rgba(74,222,128,.04);
+        }
+
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%; transform: translateX(-50%);
+            width: 60%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-dim), transparent);
+        }
+
+        .card-label {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .card-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.7rem;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .card-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        /* Form */
+        .field {
+            margin-bottom: 18px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--text-muted);
+            margin-bottom: 7px;
+        }
+
+        .field .optional {
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            text-transform: none;
+            letter-spacing: 0;
+            margin-left: 6px;
+        }
+
+        .field input {
+            width: 100%;
+            background: rgba(255,255,255,.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 11px 14px;
+            color: var(--text);
+            font-family: 'DM Mono', monospace;
+            font-size: 0.82rem;
+            outline: none;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .field input:focus {
+            border-color: var(--accent-dim);
+            box-shadow: 0 0 0 3px rgba(74,222,128,.08);
+        }
+
+        .field input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 8px;
+            background: transparent;
+            border: 1px solid var(--accent-dim);
+            border-radius: 8px;
+            padding: 12px 18px;
+            color: var(--accent);
+            font-family: 'DM Mono', monospace;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all .18s;
+            letter-spacing: .05em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .submit-btn:hover {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+            box-shadow: 0 0 22px rgba(74,222,128,.3);
+        }
+
+        .msg {
+            margin-top: 14px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            min-height: 20px;
+        }
+
+        .msg.error { color: #f87171; }
+        .msg.success { color: var(--accent); }
+
+        .divider {
+            margin: 24px 0;
+            border: none;
+            border-top: 1px solid var(--border);
+        }
+
+        .switch-link {
+            text-align: center;
+            font-size: 0.74rem;
+            color: var(--text-muted);
+        }
+
+        .switch-link a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: opacity .15s;
+        }
+
+        .switch-link a:hover { opacity: .75; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <a href="/" class="logo">
+            <div class="logo-icon">🌿</div>
+            <h1>Eco<span>Design</span>AI</h1>
+        </a>
+        <span class="header-tag">A Sustainable Product Design Assistant</span>
+        <div class="status-dot"></div>
+    </div>
+</header>
+
+<div class="page">
+    <div class="auth-card">
+        <div class="card-label">New Account</div>
+        <div class="card-title">Sign Up</div>
+        <div class="card-sub">Join the sustainable design community.</div>
+
+        <form id="signupForm" method="POST">
+            <div class="field">
+                <label>Username</label>
+                <input type="text" name="username" placeholder="your_username" required>
+            </div>
+            <div class="field">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="••••••••" required>
+            </div>
+            <div class="field">
+                <label>Email <span class="optional">(optional)</span></label>
+                <input type="email" name="email" placeholder="you@example.com">
+            </div>
+            <button type="submit" class="submit-btn">Create Account →</button>
+        </form>
+
+        <div id="signupMsg" class="msg"></div>
+
+        <hr class="divider">
+        <div class="switch-link">
+            Already have an account? <a href="/login">Login</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

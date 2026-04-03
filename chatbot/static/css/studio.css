@@ -317,3 +317,48 @@ body { display: flex; flex-direction: column; }
     border: none;
     background: transparent;
 }
+
+.auth-links {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.auth-btn {
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 7px;
+    font-size: 0.74rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    transition: all .18s;
+    letter-spacing: .04em;
+}
+
+.auth-btn:hover {
+    border-color: var(--accent-dim);
+    color: var(--accent);
+    background: var(--accent-glow);
+}
+
+.auth-btn.signup {
+    background: transparent;
+    border-color: var(--accent-dim);
+    color: var(--accent);
+}
+
+.auth-btn.signup:hover {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+    box-shadow: 0 0 16px rgba(74,222,128,.25);
+}
+
+.welcome-text {
+    font-size: 0.74rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-muted);
+    letter-spacing: .04em;
+}
