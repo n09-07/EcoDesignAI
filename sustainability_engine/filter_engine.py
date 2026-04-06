@@ -108,4 +108,3 @@ def filter_materials(product=None, budget=None, eco_priority=False,
                 results.insert(0, row.to_dict())
 
     return results
-
