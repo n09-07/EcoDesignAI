@@ -23,7 +23,7 @@ def interpret_durability(value):
 # ✅ FIXED FUNCTION
 def generate_decision(product=None, budget=None, eco_priority=False,
                       durability_req=None, preferred_material=None,
-                      user_name=None):   # ✅ ADDED
+                      user_name=None):
 
     materials = filter_materials(
         product=product,
@@ -44,7 +44,6 @@ def generate_decision(product=None, budget=None, eco_priority=False,
     top_material = materials[0]
     top_3 = materials[:3]
 
-    # ✅ FIX: correct DB save
     if user_name:
         save_history(user_name, product, top_material.get("material"))
 
@@ -64,6 +63,43 @@ def generate_decision(product=None, budget=None, eco_priority=False,
         f"This material provides the best balance between "
         f"environmental impact, durability, and cost efficiency."
     )
+
+    # 🔥 FIXED: Proper comparison logic INSIDE function
+    comparison_notes = []
+
+    for mat in top_3:
+        if mat["material"] != top_material["material"]:
+            reasons = []
+
+            if mat.get("carbon_score", 0) > top_material.get("carbon_score", 0):
+                reasons.append("higher carbon impact")
+
+            if mat.get("eco_score", 0) < top_material.get("eco_score", 0):
+                reasons.append("lower eco score")
+
+            if mat.get("recyclable") == "no":
+                reasons.append("not recyclable")
+
+            if mat.get("biodegradable") == "no":
+                reasons.append("not biodegradable")
+
+            if mat.get("durability") == "low":
+                reasons.append("lower durability")
+
+            # 🔥 Special realistic reasoning
+            if mat["material"].lower() == "aluminum":
+                reasons.append("energy-intensive production")
+
+            if reasons:
+                comparison_notes.append(
+                    f"{mat['material']} is less preferred due to {', '.join(reasons)}."
+                )
+
+    # 🔥 Attach to explanation
+    if comparison_notes:
+        explanation += "\n\nWhy not other materials:\n"
+        for note in comparison_notes:
+            explanation += f"• {note}\n"
 
     eco_warning = None
     if top_material.get("user_forced"):

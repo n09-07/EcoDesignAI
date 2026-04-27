@@ -8,40 +8,62 @@ INTENTS_PATH = os.path.join(BASE_DIR, "intents.json")
 with open(INTENTS_PATH, "r", encoding="utf-8") as file:
     intents = json.load(file)
 
-# Pre-sort materials longest-first so "bamboo_laminate" matches before "bamboo"
+# Sort materials longest-first (prevents "hemp" matching before "hempcrete")
 _sorted_materials = sorted(intents["materials"], key=lambda m: len(m), reverse=True)
 
 
 def extract_data(user_text, expected_slot=None):
+    # ✅ Normalize text
     text = user_text.lower().strip()
+    text = text.replace("-", " ").replace("_", " ")
 
     result = {
-        "product":      None,
-        "material":     None,
-        "budget":       None,
+        "product": None,
+        "material": None,
+        "budget": None,
         "eco_priority": None,
-        "durability":   None
+        "durability": None
     }
 
-    # ── Product ──────────────────────────────────────────────
+    # ── PRODUCT (IMPROVED WITH SYNONYMS) ─────────────────────
     if expected_slot in [None, "product"]:
-        for p in intents["products"]:
-            # whole-word match to avoid "shirt" matching "t-shirt" wrong
-            if re.search(r'\b' + re.escape(p) + r'\b', text):
-                result["product"] = p
+
+        product_synonyms = {
+            "phonecase": [
+                "phonecase", "phone case", "phone cover",
+                "mobile case", "mobile cover"
+            ],
+            "chair": ["chair", "seat"],
+            "bottle": ["bottle", "water bottle", "flask"]
+        }
+
+        found = False
+
+        for product, synonyms in product_synonyms.items():
+            for word in synonyms:
+                if re.search(r'\b' + re.escape(word) + r'\b', text):
+                    result["product"] = product
+                    found = True
+                    break
+            if found:
                 break
 
-    # ── Material ─────────────────────────────────────────────
-    # Longest-first prevents "hemp" stealing "hempcrete"
+        # 🔁 fallback to intents.json
+        if not result["product"]:
+            for p in intents["products"]:
+                if re.search(r'\b' + re.escape(p) + r'\b', text):
+                    result["product"] = p
+                    break
+
+    # ── MATERIAL ─────────────────────────────────────────────
     if expected_slot in [None, "material"]:
         for m in _sorted_materials:
             readable = m.replace("_", " ")
-            # Full phrase match first (e.g. "bamboo laminate")
             if re.search(r'\b' + re.escape(readable) + r'\b', text):
                 result["material"] = m
                 break
 
-    # ── Budget ───────────────────────────────────────────────
+    # ── BUDGET ───────────────────────────────────────────────
     if expected_slot in [None, "budget"]:
         for level, words in intents["budget"].items():
             for w in words:
@@ -51,7 +73,7 @@ def extract_data(user_text, expected_slot=None):
             if result["budget"]:
                 break
 
-    # ── Eco priority ─────────────────────────────────────────
+    # ── ECO PRIORITY ─────────────────────────────────────────
     if expected_slot in [None, "eco_priority"]:
         eco_words_safe = [e for e in intents["eco_words"] if e != "organic"]
 
@@ -60,6 +82,7 @@ def extract_data(user_text, expected_slot=None):
                 result["eco_priority"] = eco
                 break
 
+        # Handle "organic" carefully
         if result["eco_priority"] is None and "organic" in text:
             material_phrases = [m.replace("_", " ") for m in intents["materials"]]
             is_material_context = any(
@@ -69,7 +92,7 @@ def extract_data(user_text, expected_slot=None):
             if not is_material_context:
                 result["eco_priority"] = "organic"
 
-    # ── Durability ───────────────────────────────────────────
+    # ── DURABILITY ───────────────────────────────────────────
     if expected_slot in [None, "durability"]:
         for level in ["high", "medium", "low"]:
             if re.search(r'\b' + level + r'\b', text):
